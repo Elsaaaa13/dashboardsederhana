@@ -4,6 +4,7 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import os
+import io
 
 # Atur gaya Seaborn
 sns.set_theme(style="whitegrid", context="talk")
@@ -39,9 +40,9 @@ def main():
     
     # Menampilkan informasi dataset
     st.subheader("📈 Informasi Dataset")
-    buffer = []
+    buffer = io.StringIO()
     merged_data_df.info(buf=buffer)
-    st.text("\n".join(buffer))
+    st.text(buffer.getvalue())
     
     # Statistik deskriptif
     st.subheader("📉 Statistik Deskriptif")
