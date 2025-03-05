@@ -27,8 +27,25 @@ def load_data():
 def main():
     st.title("🚴‍♂️ Bike Sharing Dashboard")
 
-     # Load data
+    # Load data
     merged_data_df = load_data()
     if merged_data_df is None or merged_data_df.empty:
         st.warning("Data tidak tersedia atau kosong.")
         return
+    
+    # Tampilkan preview dataset
+    st.subheader("📊 Data Review")
+    st.write(merged_data_df.head())
+    
+    # Menampilkan informasi dataset
+    st.subheader("📈 Informasi Dataset")
+    buffer = []
+    merged_data_df.info(buf=buffer)
+    st.text("\n".join(buffer))
+    
+    # Statistik deskriptif
+    st.subheader("📉 Statistik Deskriptif")
+    st.write(merged_data_df.describe())
+
+if __name__ == "__main__":
+    main()
