@@ -48,11 +48,16 @@ def main():
     st.subheader("📉 Statistik Deskriptif")
     st.write(merged_data_df.describe())
     
+    # Debugging: tampilkan semua nama kolom yang tersedia
+    st.subheader("🔍 Kolom dalam Dataset")
+    st.write(merged_data_df.columns.tolist())
+    
     # Visualisasi 10 Produk Paling Banyak Terjual
     st.subheader("🥇 10 Produk Paling Banyak Terjual")
-    if 'Produk' in merged_data_df.columns and 'Jumlah' in merged_data_df.columns:
-        product_counts = merged_data_df.groupby('Produk')['Jumlah'].sum().reset_index()
-        top_products = product_counts.nlargest(10, 'Jumlah')
+    if 'product_category_name_x' in merged_data_df.columns:
+        produk_terlaris = merged_data_df["product_category_name_x"].value_counts().reset_index()
+        produk_terlaris.columns = ["product_category_name_x", "total_sold"]
+        top_products = produk_terlaris.head(10)
         
         # Debugging: tampilkan data sebelum plotting
         st.write(top_products)
@@ -63,18 +68,18 @@ def main():
         # Plot pie chart
         fig, ax = plt.subplots(figsize=(10, 6))
         ax.pie(
-            top_products['Jumlah'],
-            labels=top_products['Produk'],
+            top_products['total_sold'],
+            labels=top_products['product_category_name_x'],
             autopct='%1.1f%%',
             colors=colors,
             startangle=140
         )
         ax.axis("equal")  # Menjaga aspek agar lingkaran sempurna
-        plt.title("10 Produk Paling Banyak Terjual")
+        plt.title("10 Kategori Produk Paling Banyak Terjual")
         
         st.pyplot(fig)
     else:
-        st.warning("Kolom 'Produk' atau 'Jumlah' tidak ditemukan dalam dataset.")
+        st.warning("Kolom 'product_category_name_x' tidak ditemukan dalam dataset.")
 
 if __name__ == "__main__":
     main()
