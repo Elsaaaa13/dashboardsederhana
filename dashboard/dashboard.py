@@ -26,7 +26,7 @@ def load_data():
         return None
     
 def main():
-    st.title("🚴♂️ Bike Sharing Dashboard")
+    st.title("🏪 E-Commerce Dashboard")
     
     # Sidebar
     st.sidebar.header("🔧 Pengaturan")
