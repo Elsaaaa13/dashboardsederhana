@@ -23,3 +23,5 @@ def load_data():
     except Exception as e:
         st.error(f"Error loading data: {e}")
         return None
+    def main():
+        st.title("🚴‍♂️ Bike Sharing Dashboard")
