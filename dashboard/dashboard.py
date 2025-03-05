@@ -48,8 +48,8 @@ def main():
         # Debugging: tampilkan data sebelum plotting
         st.write(top_products)
         
-        # Buat warna unik
-        colors = sns.color_palette("pastel", len(top_products))
+        # Gunakan palet warna yang sama seperti di Google Colab
+        colors = sns.color_palette("tab10", len(top_products))
         
         # Plot pie chart
         fig, ax = plt.subplots(figsize=(10, 6))
