@@ -38,20 +38,6 @@ def main():
     st.subheader("📊 Data Review")
     st.write(merged_data_df.head())
     
-    # Menampilkan informasi dataset
-    st.subheader("📈 Informasi Dataset")
-    buffer = io.StringIO()
-    merged_data_df.info(buf=buffer)
-    st.text(buffer.getvalue())
-    
-    # Statistik deskriptif
-    st.subheader("📉 Statistik Deskriptif")
-    st.write(merged_data_df.describe())
-    
-    # Debugging: tampilkan semua nama kolom yang tersedia
-    st.subheader("🔍 Kolom dalam Dataset")
-    st.write(merged_data_df.columns.tolist())
-    
     # Visualisasi 10 Produk Paling Banyak Terjual
     st.subheader("🥇 10 Produk Paling Banyak Terjual")
     if 'product_category_name_x' in merged_data_df.columns:
