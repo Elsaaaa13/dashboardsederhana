@@ -66,6 +66,36 @@ def main():
         st.pyplot(fig)
     else:
         st.warning("Kolom 'product_category_name_x' tidak ditemukan dalam dataset.")
+    
+    # Visualisasi 5 Kategori Produk dengan Rata-rata Foto Terbanyak
+    st.subheader("📷 5 Kategori Produk dengan Rata-rata Foto Terbanyak")
+    if 'product_category_name_x' in merged_data_df.columns and 'product_photos_qty_x' in merged_data_df.columns:
+        foto_rata_rata = merged_data_df.groupby("product_category_name_x")["product_photos_qty_x"].mean().reset_index()
+        foto_rata_rata = foto_rata_rata.sort_values(by="product_photos_qty_x", ascending=False).head(5)
+        
+        # Debugging: tampilkan data sebelum plotting
+        st.write(foto_rata_rata)
+        
+        # Plot line chart
+        fig, ax = plt.subplots(figsize=(10, 6))
+        sns.lineplot(
+            x="product_category_name_x",
+            y="product_photos_qty_x",
+            data=foto_rata_rata,
+            marker="o",
+            linewidth=2,
+            color="b",
+            ax=ax
+        )
+        
+        ax.set_xlabel("Kategori Produk")
+        ax.set_ylabel("Rata-rata Jumlah Foto")
+        ax.set_title("5 Kategori Produk dengan Rata-rata Foto Terbanyak")
+        ax.set_xticklabels(foto_rata_rata["product_category_name_x"], rotation=45)
+        
+        st.pyplot(fig)
+    else:
+        st.warning("Kolom 'product_category_name_x' atau 'product_photos_qty_x' tidak ditemukan dalam dataset.")
 
 if __name__ == "__main__":
     main()
