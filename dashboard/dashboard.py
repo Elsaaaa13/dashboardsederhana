@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 import os
 import io
+import plotly.express as px
 
 # Atur gaya Seaborn
 sns.set_theme(style="whitegrid", context="talk")
@@ -26,6 +27,7 @@ def load_data():
         return None
     
 def main():
+    st.set_page_config(page_title="Bike Sharing Dashboard", layout="wide")
     st.title("🚴‍♂️ Bike Sharing Dashboard")
     
     # Sidebar
@@ -39,9 +41,17 @@ def main():
         st.warning("Data tidak tersedia atau kosong.")
         return
     
+    # Sidebar untuk memilih kategori produk
+    st.sidebar.subheader("📌 Pilih Kategori Produk")
+    kategori_produk = merged_data_df["product_category_name_x"].unique()
+    selected_category = st.sidebar.selectbox("Pilih kategori untuk ditampilkan", kategori_produk)
+    
+    # Filter data berdasarkan kategori yang dipilih
+    filtered_data = merged_data_df[merged_data_df["product_category_name_x"] == selected_category]
+    
     # Tampilkan preview dataset
     st.subheader("📊 Data Review")
-    st.write(merged_data_df.head())
+    st.write(filtered_data.head())
     
     # Visualisasi 10 Produk Paling Banyak Terjual
     if show_pie_chart:
@@ -54,22 +64,15 @@ def main():
             # Debugging: tampilkan data sebelum plotting
             st.write(top_products)
             
-            # Gunakan palet warna yang sama seperti di Google Colab
-            colors = sns.color_palette("tab10", len(top_products))
-            
-            # Plot pie chart
-            fig, ax = plt.subplots(figsize=(10, 6))
-            ax.pie(
-                top_products['total_sold'],
-                labels=top_products['product_category_name_x'],
-                autopct='%1.1f%%',
-                colors=colors,
-                startangle=140
+            # Plot pie chart dengan Plotly untuk tampilan lebih menarik
+            fig = px.pie(
+                top_products,
+                values='total_sold',
+                names='product_category_name_x',
+                title="10 Kategori Produk Paling Banyak Terjual",
+                color_discrete_sequence=px.colors.qualitative.Set3
             )
-            ax.axis("equal")  # Menjaga aspek agar lingkaran sempurna
-            plt.title("10 Kategori Produk Paling Banyak Terjual")
-            
-            st.pyplot(fig)
+            st.plotly_chart(fig)
         else:
             st.warning("Kolom 'product_category_name_x' tidak ditemukan dalam dataset.")
     
@@ -83,24 +86,17 @@ def main():
             # Debugging: tampilkan data sebelum plotting
             st.write(foto_rata_rata)
             
-            # Plot line chart
-            fig, ax = plt.subplots(figsize=(10, 6))
-            sns.lineplot(
+            # Plot line chart dengan Plotly
+            fig = px.line(
+                foto_rata_rata,
                 x="product_category_name_x",
                 y="product_photos_qty_x",
-                data=foto_rata_rata,
-                marker="o",
-                linewidth=2,
-                color="b",
-                ax=ax
+                markers=True,
+                title="5 Kategori Produk dengan Rata-rata Foto Terbanyak",
+                color_discrete_sequence=["blue"]
             )
-            
-            ax.set_xlabel("Kategori Produk")
-            ax.set_ylabel("Rata-rata Jumlah Foto")
-            ax.set_title("5 Kategori Produk dengan Rata-rata Foto Terbanyak")
-            ax.set_xticklabels(foto_rata_rata["product_category_name_x"], rotation=45)
-            
-            st.pyplot(fig)
+            fig.update_layout(xaxis_title="Kategori Produk", yaxis_title="Rata-rata Jumlah Foto", xaxis_tickangle=-45)
+            st.plotly_chart(fig)
         else:
             st.warning("Kolom 'product_category_name_x' atau 'product_photos_qty_x' tidak ditemukan dalam dataset.")
 
