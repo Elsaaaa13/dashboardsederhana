@@ -53,8 +53,11 @@ def main():
         product_counts = merged_data_df.groupby('Produk')['Jumlah'].sum().reset_index()
         top_products = product_counts.nlargest(10, 'Jumlah')
         
+        # Debugging: tampilkan data sebelum plotting
+        st.write(top_products)
+        
         # Buat warna unik
-        colors = plt.cm.get_cmap("tab10", len(top_products))
+        colors = sns.color_palette("pastel", len(top_products))
         
         # Plot pie chart
         fig, ax = plt.subplots(figsize=(10, 6))
@@ -62,7 +65,7 @@ def main():
             top_products['Jumlah'],
             labels=top_products['Produk'],
             autopct='%1.1f%%',
-            colors=[colors(i) for i in range(len(top_products))],
+            colors=colors,
             startangle=140
         )
         ax.axis("equal")  # Menjaga aspek agar lingkaran sempurna
