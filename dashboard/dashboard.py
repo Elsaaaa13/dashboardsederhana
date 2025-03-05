@@ -23,5 +23,12 @@ def load_data():
     except Exception as e:
         st.error(f"Error loading data: {e}")
         return None
-    def main():
-        st.title("🚴‍♂️ Bike Sharing Dashboard")
+    
+def main():
+    st.title("🚴‍♂️ Bike Sharing Dashboard")
+
+     # Load data
+    merged_data_df = load_data()
+    if merged_data_df is None or merged_data_df.empty:
+        st.warning("Data tidak tersedia atau kosong.")
+        return
