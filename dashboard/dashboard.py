@@ -46,6 +46,31 @@ def main():
     # Statistik deskriptif
     st.subheader("📉 Statistik Deskriptif")
     st.write(merged_data_df.describe())
+    
+    # Visualisasi 10 Produk Paling Banyak Terjual
+    st.subheader("🥇 10 Produk Paling Banyak Terjual")
+    if 'Produk' in merged_data_df.columns and 'Jumlah' in merged_data_df.columns:
+        product_counts = merged_data_df.groupby('Produk')['Jumlah'].sum().reset_index()
+        top_products = product_counts.nlargest(10, 'Jumlah')
+        
+        # Buat warna unik
+        colors = plt.cm.get_cmap("tab10", len(top_products))
+        
+        # Plot pie chart
+        fig, ax = plt.subplots(figsize=(10, 6))
+        ax.pie(
+            top_products['Jumlah'],
+            labels=top_products['Produk'],
+            autopct='%1.1f%%',
+            colors=[colors(i) for i in range(len(top_products))],
+            startangle=140
+        )
+        ax.axis("equal")  # Menjaga aspek agar lingkaran sempurna
+        plt.title("10 Produk Paling Banyak Terjual")
+        
+        st.pyplot(fig)
+    else:
+        st.warning("Kolom 'Produk' atau 'Jumlah' tidak ditemukan dalam dataset.")
 
 if __name__ == "__main__":
     main()
