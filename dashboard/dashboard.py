@@ -27,10 +27,10 @@ def load_data():
     
 def main():
     st.set_page_config(page_title="E-Commerce Dashboard", layout="wide")
-    st.title("\ud83c\udfea E-Commerce Dashboard")
+    st.title("E-Commerce Dashboard")
     
     # Sidebar
-    st.sidebar.header("\ud83d\udd27 Pengaturan")
+    st.sidebar.header("Pengaturan")
     show_city_chart = st.sidebar.checkbox("Tampilkan Grafik Kota Pelanggan", True)
     
     # Load data
@@ -40,12 +40,12 @@ def main():
         return
     
     # Tampilkan preview dataset
-    st.subheader("\ud83d\udcca Data Review")
+    st.subheader("Data Review")
     st.write(merged_data_df.head())
     
     # Visualisasi Dari Kota Mana Pelanggan Berasal
     if show_city_chart:
-        st.subheader("\ud83c\udf0d Kota Asal Pelanggan")
+        st.subheader("Kota Asal Pelanggan")
         if 'customer_city' in merged_data_df.columns:
             city_counts = merged_data_df['customer_city'].value_counts().head(10)
             colors = sns.color_palette("pastel", len(city_counts))
