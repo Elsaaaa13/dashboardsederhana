@@ -16,7 +16,6 @@ data_path = os.path.join(BASE_DIR, "data_terbaru.csv")
 @st.cache_data
 def load_data():
     """Load dataset dengan pengecekan error."""
-    st.write(f"Mencari file di: {data_path}")  # Debugging path file
     if not os.path.exists(data_path):
         st.error(f"File data tidak ditemukan: {data_path}")
         return None
