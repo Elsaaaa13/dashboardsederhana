@@ -16,7 +16,7 @@ data_path = os.path.join(BASE_DIR, "data_terbaru.csv")
 @st.cache_data
 def load_data():
     """Load dataset dengan pengecekan error."""
-    st.write("🔍 Mencari file data...")  # Debugging path file dihapus
+    st.write("Selamat datang di dashboard e-commerce...")  # Debugging path file dihapus
     if not os.path.exists(data_path):
         st.error("⚠️ File data tidak ditemukan!")
         return None
