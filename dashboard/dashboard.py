@@ -26,12 +26,12 @@ def load_data():
         return None
     
 def main():
+    st.set_page_config(page_title="E-Commerce Dashboard", layout="wide")
     st.title("🏪 E-Commerce Dashboard")
     
     # Sidebar
     st.sidebar.header("🔧 Pengaturan")
-    show_pie_chart = st.sidebar.checkbox("Tampilkan Diagram Lingkaran", True)
-    show_line_chart = st.sidebar.checkbox("Tampilkan Grafik Garis", True)
+    show_city_chart = st.sidebar.checkbox("Tampilkan Grafik Kota Pelanggan", True)
     
     # Load data
     merged_data_df = load_data()
@@ -43,67 +43,25 @@ def main():
     st.subheader("📊 Data Review")
     st.write(merged_data_df.head())
     
-    # Visualisasi 10 Produk Paling Banyak Terjual
-    if show_pie_chart:
-        st.subheader("🥇 10 Produk Paling Banyak Terjual")
-        if 'product_category_name_x' in merged_data_df.columns:
-            produk_terlaris = merged_data_df["product_category_name_x"].value_counts().reset_index()
-            produk_terlaris.columns = ["product_category_name_x", "total_sold"]
-            top_products = produk_terlaris.head(10)
+    # Visualisasi Dari Kota Mana Pelanggan Berasal
+    if show_city_chart:
+        st.subheader("🌍 Kota Asal Pelanggan")
+        if 'customer_city' in merged_data_df.columns:
+            city_counts = merged_data_df['customer_city'].value_counts().head(10)
+            colors = sns.color_palette("pastel", len(city_counts))
             
-            # Debugging: tampilkan data sebelum plotting
-            st.write(top_products)
+            fig, ax = plt.subplots(figsize=(12, 6))
+            city_counts.plot(kind='bar', color=colors, edgecolor='black', ax=ax)
             
-            # Gunakan palet warna yang sama seperti di Google Colab
-            colors = sns.color_palette("tab10", len(top_products))
-            
-            # Plot pie chart
-            fig, ax = plt.subplots(figsize=(10, 6))
-            ax.pie(
-                top_products['total_sold'],
-                labels=top_products['product_category_name_x'],
-                autopct='%1.1f%%',
-                colors=colors,
-                startangle=140
-            )
-            ax.axis("equal")  # Menjaga aspek agar lingkaran sempurna
-            plt.title("10 Kategori Produk Paling Banyak Terjual")
+            ax.set_title("10 Kota dengan Pelanggan Terbanyak", fontsize=14)
+            ax.set_xlabel("Kota", fontsize=12)
+            ax.set_ylabel("Jumlah Pelanggan", fontsize=12)
+            ax.set_xticklabels(city_counts.index, rotation=45)
+            ax.grid(axis='y', linestyle='--', alpha=0.7)
             
             st.pyplot(fig)
         else:
-            st.warning("Kolom 'product_category_name_x' tidak ditemukan dalam dataset.")
-    
-    # Visualisasi 5 Kategori Produk dengan Rata-rata Foto Terbanyak
-    if show_line_chart:
-        st.subheader("📷 5 Kategori Produk dengan Rata-rata Foto Terbanyak")
-        if 'product_category_name_x' in merged_data_df.columns and 'product_photos_qty_x' in merged_data_df.columns:
-            foto_rata_rata = merged_data_df.groupby("product_category_name_x")["product_photos_qty_x"].mean().reset_index()
-            foto_rata_rata = foto_rata_rata.sort_values(by="product_photos_qty_x", ascending=False).head(5)
-            
-            # Debugging: tampilkan data sebelum plotting
-            st.write(foto_rata_rata)
-            
-            # Plot line chart
-            fig, ax = plt.subplots(figsize=(10, 6))
-            sns.lineplot(
-                x="product_category_name_x",
-                y="product_photos_qty_x",
-                data=foto_rata_rata,
-                marker="o",
-                linewidth=2,
-                color="b",
-                ax=ax
-            )
-            
-            ax.set_xlabel("Kategori Produk")
-            ax.set_ylabel("Rata-rata Jumlah Foto")
-            ax.set_title("5 Kategori Produk dengan Rata-rata Foto Terbanyak")
-            ax.set_xticklabels(foto_rata_rata["product_category_name_x"], rotation=45)
-            
-            st.pyplot(fig)
-        else:
-            st.warning("Kolom 'product_category_name_x' atau 'product_photos_qty_x' tidak ditemukan dalam dataset.")
+            st.warning("Kolom 'customer_city' tidak ditemukan dalam dataset.")
 
 if __name__ == "__main__":
     main()
-
