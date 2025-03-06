@@ -40,6 +40,10 @@ def main():
         st.warning("🚫 Data tidak tersedia atau kosong.")
         return
     
+    # Tampilkan preview dataset
+    st.subheader("📊 Data Review")
+    st.write(merged_data_df.head())
+    
     # Visualisasi Dari Kota Mana Pelanggan Berasal
     if show_city_chart:
         st.subheader("🌍 Kota Asal Pelanggan")
