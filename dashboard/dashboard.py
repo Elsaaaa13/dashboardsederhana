@@ -16,21 +16,22 @@ data_path = os.path.join(BASE_DIR, "data_terbaru.csv")
 @st.cache_data
 def load_data():
     """Load dataset dengan pengecekan error."""
+    st.write(f"Mencari file di: {data_path}")  # Debugging path file
     if not os.path.exists(data_path):
         st.error(f"File data tidak ditemukan: {data_path}")
         return None
     try:
-        return pd.read_csv(data_path)
+        return pd.read_csv(data_path, encoding="utf-8", delimiter=",")
     except Exception as e:
         st.error(f"Error loading data: {e}")
         return None
     
 def main():
     st.set_page_config(page_title="E-Commerce Dashboard", layout="wide")
-    st.title("E-Commerce Dashboard")
+    st.title("🏪 E-Commerce Dashboard")
     
     # Sidebar
-    st.sidebar.header("Pengaturan")
+    st.sidebar.header("🔧 Pengaturan")
     show_city_chart = st.sidebar.checkbox("Tampilkan Grafik Kota Pelanggan", True)
     
     # Load data
@@ -40,12 +41,12 @@ def main():
         return
     
     # Tampilkan preview dataset
-    st.subheader("Data Review")
+    st.subheader("📊 Data Review")
     st.write(merged_data_df.head())
     
     # Visualisasi Dari Kota Mana Pelanggan Berasal
     if show_city_chart:
-        st.subheader("Kota Asal Pelanggan")
+        st.subheader("🌍 Kota Asal Pelanggan")
         if 'customer_city' in merged_data_df.columns:
             city_counts = merged_data_df['customer_city'].value_counts().head(10)
             colors = sns.color_palette("pastel", len(city_counts))
