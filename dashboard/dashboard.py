@@ -16,13 +16,14 @@ data_path = os.path.join(BASE_DIR, "data_terbaru.csv")
 @st.cache_data
 def load_data():
     """Load dataset dengan pengecekan error."""
+    st.write("🔍 Mencari file data...")  # Debugging path file dihapus
     if not os.path.exists(data_path):
-        st.error(f"File data tidak ditemukan: {data_path}")
+        st.error("⚠️ File data tidak ditemukan!")
         return None
     try:
         return pd.read_csv(data_path, encoding="utf-8", delimiter=",")
     except Exception as e:
-        st.error(f"Error loading data: {e}")
+        st.error(f"⚠️ Error loading data: {e}")
         return None
     
 def main():
@@ -36,12 +37,8 @@ def main():
     # Load data
     merged_data_df = load_data()
     if merged_data_df is None or merged_data_df.empty:
-        st.warning("Data tidak tersedia atau kosong.")
+        st.warning("🚫 Data tidak tersedia atau kosong.")
         return
-    
-    # Tampilkan preview dataset
-    st.subheader("📊 Data Review")
-    st.write(merged_data_df.head())
     
     # Visualisasi Dari Kota Mana Pelanggan Berasal
     if show_city_chart:
@@ -61,7 +58,7 @@ def main():
             
             st.pyplot(fig)
         else:
-            st.warning("Kolom 'customer_city' tidak ditemukan dalam dataset.")
+            st.warning("⚠️ Kolom 'customer_city' tidak ditemukan dalam dataset.")
 
 if __name__ == "__main__":
     main()
