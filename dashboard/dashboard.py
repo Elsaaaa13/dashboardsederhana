@@ -33,6 +33,7 @@ def main():
     # Sidebar
     st.sidebar.header("🔧 Pengaturan")
     show_city_chart = st.sidebar.checkbox("Tampilkan Grafik Kota Pelanggan", True)
+    show_order_status_chart = st.sidebar.checkbox("Tampilkan Grafik Status Pesanan", True)
     
     # Load data
     merged_data_df = load_data()
@@ -63,6 +64,29 @@ def main():
             st.pyplot(fig)
         else:
             st.warning("⚠️ Kolom 'customer_city' tidak ditemukan dalam dataset.")
+    
+    # Visualisasi Status Pesanan yang Paling Sering Muncul
+    if show_order_status_chart:
+        st.subheader("📦 Status Pesanan yang Paling Sering Muncul")
+        if 'order_status' in merged_data_df.columns:
+            order_status_counts = merged_data_df['order_status'].value_counts()
+            
+            fig, ax = plt.subplots(figsize=(12, 6))
+            ax.plot(order_status_counts.index, order_status_counts.values, marker='o', linestyle='-', color='b', linewidth=2, markersize=8)
+            
+            for i, value in enumerate(order_status_counts.values):
+                ax.text(i, value, str(value), ha='center', va='bottom', fontsize=10, fontweight='bold')
+            
+            ax.set_title("Status Pesanan yang Paling Sering Muncul", fontsize=14)
+            ax.set_xlabel("Status Pesanan", fontsize=12)
+            ax.set_ylabel("Jumlah Pesanan", fontsize=12)
+            ax.set_xticklabels(order_status_counts.index, rotation=45)
+            ax.yaxis.set_major_locator(plt.MaxNLocator(integer=True))
+            ax.grid(axis='y', linestyle='--', alpha=0.7)
+            
+            st.pyplot(fig)
+        else:
+            st.warning("⚠️ Kolom 'order_status' tidak ditemukan dalam dataset.")
 
 if __name__ == "__main__":
     main()
