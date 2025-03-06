@@ -11,7 +11,7 @@ sns.set_theme(style="whitegrid", context="talk")
 
 # Tentukan path absolut ke file CSV dan gambar
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-data_path = os.path.join(BASE_DIR, "data_baru.csv")
+data_path = os.path.join(BASE_DIR, "data_terbaru.csv")
 
 @st.cache_data
 def load_data():
@@ -27,10 +27,10 @@ def load_data():
     
 def main():
     st.set_page_config(page_title="E-Commerce Dashboard", layout="wide")
-    st.title("🏪 E-Commerce Dashboard")
+    st.title("\ud83c\udfea E-Commerce Dashboard")
     
     # Sidebar
-    st.sidebar.header("🔧 Pengaturan")
+    st.sidebar.header("\ud83d\udd27 Pengaturan")
     show_city_chart = st.sidebar.checkbox("Tampilkan Grafik Kota Pelanggan", True)
     
     # Load data
@@ -40,12 +40,12 @@ def main():
         return
     
     # Tampilkan preview dataset
-    st.subheader("📊 Data Review")
+    st.subheader("\ud83d\udcca Data Review")
     st.write(merged_data_df.head())
     
     # Visualisasi Dari Kota Mana Pelanggan Berasal
     if show_city_chart:
-        st.subheader("🌍 Kota Asal Pelanggan")
+        st.subheader("\ud83c\udf0d Kota Asal Pelanggan")
         if 'customer_city' in merged_data_df.columns:
             city_counts = merged_data_df['customer_city'].value_counts().head(10)
             colors = sns.color_palette("pastel", len(city_counts))
